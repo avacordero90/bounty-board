@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Bounty Board</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/default.css" />
+    </head>
+    <body>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="login.html">
+                        <img class="miniLogo" alt="Brand" src="images/bountyBoardLogoMini.png">
+                    </a>
+                </div>
+
+                <div class="collapse navbar-collapse">
+                    <ul class="nav nav-tabs nav-justified">
+                        <li role="presentation" id="searchButton"><a href="main.html">Find A Job</a></li>
+                        <li role="presentation"><a href="posting.html">Post A Job</a></li>
+                        <li role="presentation" class="active"><a>My Jobs</a></li>
+                        <li role="presentation"><a href="leaderboard.html">Leaderboard</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="username">Username <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">User Profile</a></li>
+                                <li><a href="#">Completed Jobs</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="login.html" id="logout">Log Out</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="nav navbar-nav" id="searchBar">
+                <form class="navbar-form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Keywords">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="inputCity" placeholder="City">
+                    </div>
+                    <div class="form-group">
+                        <input type="date" class="form-control" id="inputAddress" placeholder="Date">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="inputEstimate" placeholder="Duration">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="inputPay" placeholder="Pay">
+                    </div>
+                    <div class="form-group">
+                        <input type="radio" name="inputPayType" value="Hourly" checked> Hourly &nbsp;
+                        <input type="radio" name="inputPayType" value="Daily"> Daily
+                    </div>
+                    <button type="submit" class="btn btn-default">Search Jobs</button>
+                </form>
+            </div>
+        </nav>
+
+        <div class="center">
+            <h1>My Jobs</h1>
+            <div id="jobBoard">
+            </div>
+        </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="js/job.js"></script>
+    <script src="js/env.js"></script>
+    </body>
+</html>

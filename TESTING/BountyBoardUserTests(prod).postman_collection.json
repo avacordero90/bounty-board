@@ -1,0 +1,156 @@
+{
+	"variables": [],
+	"info": {
+		"name": "BountyBoardUserTests(prod)",
+		"_postman_id": "39807328-727b-9a4a-58a2-792b24cf5658",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET all users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"var body = JSON.parse(responseBody);",
+							"tests[\"Returned all jobs. Count =\" + body.length] = true && body.length > 0;",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/user",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"poster_name\":\"Bill Fuzzy\",\"job_title\":\"Trash Collection\",\"job_description\":\"Picking up a bunch of trash with one of those cartoon nail-on-a-stick deals\",\"reputation_score\":5.0,\"pay_rate\":2.50,\"is_hourly\":true,\"time_estimate\":\"20 Hours\",\"city\":\"Chicago\",\"state\":\"IL\",\"street_address\":\"666 Trump Avenue\"}"
+				},
+				"description": "Get 100 users"
+			},
+			"response": []
+		},
+		{
+			"name": "POST a new user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"",
+							"tests[\"Status code is 201. Successful POST\"] = responseCode.code === 201;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.clearEnvironmentVariable(\"newlyPostedUser1\");",
+							"postman.setEnvironmentVariable(\"newlyPostedUser1\",jsonData.id );",
+							"",
+							"tests[\"Newly created user id = \" + jsonData.id] = jsonData.id === environment.newlyPostedUser1;",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/user",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"real_name\":\"Andrew Ryan\",\"username\":\"Atlas\",\"password\":\"0bj3C+1v1zmR001z\",\"email\":\"brakeurchainsar@aol.com\",\"city\":\"rapture\",\"state\":\"Under da sea\",\"street_address\":\"Fort Frollic\",\"zip\":\"99999\"}"
+				},
+				"description": "POST a new user"
+			},
+			"response": []
+		},
+		{
+			"name": "GET previously POSTed user by ID for confirmation",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Real name = \" + jsonData.realName] = jsonData.realName === \"Andrew Ryan\";",
+							"tests[\"Job title = \" + jsonData.jobTitle] = jsonData.jobTitle === \"Would you kindly play golf with me?\";",
+							"tests[\"Job description  = \" + jsonData.jobDescription] = jsonData.jobDescription === \"Plastic surgery assistance needed\";",
+							"tests[\"Reputation score = \" + jsonData.reputationScore] = jsonData.reputationScore === 4.2;",
+							"tests[\"Rate of pay = \" + jsonData.payRate] = jsonData.payRate === 10.5;",
+							"tests[\"Is hourly? = \" + jsonData.isHourly] = jsonData.isHourly === false;",
+							"tests[\"Estimate time = \" + jsonData.timeEstimate] = jsonData.timeEstimate === \"A minute or so...\";",
+							"tests[\"Posting city = \" + jsonData.city] = jsonData.city === \"Rapture\";",
+							"tests[\"Posting state = \" + jsonData.state] = jsonData.state === \"Ociania\";",
+							"tests[\"Street address = \" + jsonData.streetAddress] = jsonData.streetAddress === \"Fort Frollic\";",
+							"tests[\"In progress? = \" + jsonData.isInProgress] = jsonData.isInProgress === false;",
+							"tests[\"Date posted = \" + jsonData.datePosted] = true;",
+							"",
+							"",
+							"",
+							"tests[\"Job id = \" + jsonData.id] = jsonData.id === environment.newlyPostedJob1;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/user/{{newlyPostedUser1}}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE previously POSTed user by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/{{newlyPostedJob1}}",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

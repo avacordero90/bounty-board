@@ -1,0 +1,1135 @@
+{
+	"variables": [],
+	"info": {
+		"name": "BountyBoard Tests (Production)",
+		"_postman_id": "d13b81c2-cec4-ab2b-b72c-16f4f6fa4084",
+		"description": "Unit tests for Software dev Project B Group 9",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET all jobs",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"var body = JSON.parse(responseBody);",
+							"tests[\"Returned all jobs. Count =\" + body.length] = true && body.length > 0;",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"poster_name\":\"Bill Fuzzy\",\"job_title\":\"Trash Collection\",\"job_description\":\"Picking up a bunch of trash with one of those cartoon nail-on-a-stick deals\",\"reputation_score\":5.0,\"pay_rate\":2.50,\"is_hourly\":true,\"time_estimate\":\"20 Hours\",\"city\":\"Chicago\",\"state\":\"IL\",\"street_address\":\"666 Trump Avenue\"}"
+				},
+				"description": "Get up to 1000 jobs. Output the total count and test for success code."
+			},
+			"response": []
+		},
+		{
+			"name": "POST a new job",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"",
+							"tests[\"Status code is 201. Successful POST\"] = responseCode.code === 201;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.clearEnvironmentVariable(\"newlyPostedJob1\");",
+							"postman.setEnvironmentVariable(\"newlyPostedJob1\",jsonData.id );",
+							"",
+							"tests[\"Newly created job id = \" + jsonData.id] = jsonData.id === environment.newlyPostedJob1;",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"poster_name\":\"Andrew Ryan\",\"job_title\":\"Would you kindly play golf with me?\",\"job_description\":\"Plastic surgery assistance needed\",\"reputation_score\":4.2,\"pay_rate\":10.50,\"is_hourly\":false,\"time_estimate\":\"A minute or so...\",\"city\":\"Rapture\",\"state\":\"Ociania\",\"street_address\":\"Fort Frollic\"}"
+				},
+				"description": "POST a new job to work with. Confirm 201 status code and add job Id to an environmental variable for use in subsequent tests."
+			},
+			"response": []
+		},
+		{
+			"name": "GET previously POSTed job by ID to confirm",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Poster name = \" + jsonData.posterName] = jsonData.posterName === \"Andrew Ryan\";",
+							"tests[\"Job title = \" + jsonData.jobTitle] = jsonData.jobTitle === \"Would you kindly play golf with me?\";",
+							"tests[\"Job description  = \" + jsonData.jobDescription] = jsonData.jobDescription === \"Plastic surgery assistance needed\";",
+							"tests[\"Reputation score = \" + jsonData.reputationScore] = jsonData.reputationScore === 4.2;",
+							"tests[\"Rate of pay = \" + jsonData.payRate] = jsonData.payRate === 10.5;",
+							"tests[\"Is hourly? = \" + jsonData.isHourly] = jsonData.isHourly === false;",
+							"tests[\"Estimate time = \" + jsonData.timeEstimate] = jsonData.timeEstimate === \"A minute or so...\";",
+							"tests[\"Posting city = \" + jsonData.city] = jsonData.city === \"Rapture\";",
+							"tests[\"Posting state = \" + jsonData.state] = jsonData.state === \"Ociania\";",
+							"tests[\"Street address = \" + jsonData.streetAddress] = jsonData.streetAddress === \"Fort Frollic\";",
+							"tests[\"In progress? = \" + jsonData.isInProgress] = jsonData.isInProgress === false;",
+							"tests[\"Date posted = \" + jsonData.datePosted] = true;",
+							"",
+							"",
+							"",
+							"tests[\"Job id = \" + jsonData.id] = jsonData.id === environment.newlyPostedJob1;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/{{newlyPostedJob1}}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Confirm the previously posted job by GETing the job by id and confirming all attributes are equl to the expected values."
+			},
+			"response": []
+		},
+		{
+			"name": "Assign a job",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"tests[\"Status code is 201 Created\"] = responseCode.code === 201;",
+							"",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/assign/{{newlyPostedJob1}}",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": "Se the recently entered job to isInProgress. Check for success code."
+			},
+			"response": []
+		},
+		{
+			"name": "Try to assign an assigned job",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"tests[\"Status code is 403 Forbidden\"] = responseCode.code === 403;",
+							"",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/assign/{{newlyPostedJob1}}",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": "Attempt to set the newly posted to job to isNiProgress = true when isInProgress already = true. Check for 403 code returned."
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm job has been assigned",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Job is set to isInProgress = \" + jsonData.isInProgress] = jsonData.isInProgress === true;",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/{{newlyPostedJob1}}",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": "Confirm that the newly added job's isInProgress attribute is set to true. Check for success code and confirm the value of isInProgress."
+			},
+			"response": []
+		},
+		{
+			"name": "Unassign a job",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"",
+							"tests[\"Status code is 201 Created\"] = responseCode.code === 201;",
+							"",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/unassign/{{newlyPostedJob1}}",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": "Set a job to isInProgress = false"
+			},
+			"response": []
+		},
+		{
+			"name": "Try to unassign a non-assigned job",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"",
+							"tests[\"Status code is 403 Forbidden\"] = responseCode.code === 403;",
+							"",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/unassign/{{newlyPostedJob1}}",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": "Attempt to set the newly posted to job to isNiProgress = false when isInProgress already = false. Check for 403 code returned."
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm job has been 'unassigned'",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Job is set to isInProgress (should be 'false')= \" + jsonData.isInProgress] = jsonData.isInProgress === false;",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/{{newlyPostedJob1}}",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": "Confirm that the newly added job's isInProgress attribute is set to false. Check for success code and confirm the value of isInProgress."
+			},
+			"response": []
+		},
+		{
+			"name": "Modify added job",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"",
+							"tests[\"Status code is 201 Created\"] = responseCode.code === 201;",
+							"",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/{{newlyPostedJob1}}",
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"poster_name\":\"Billy Corgan\", \"state\":\"Washington\"}"
+				},
+				"description": "Modify the poster name and state of the newly added post. Check for 201 code returned."
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm job modification",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Poster name = \" + jsonData.posterName] = jsonData.posterName === \"Billy Corgan\";",
+							"tests[\"Job title = \" + jsonData.jobTitle] = jsonData.jobTitle === \"Would you kindly play golf with me?\";",
+							"tests[\"Job description  = \" + jsonData.jobDescription] = jsonData.jobDescription === \"Plastic surgery assistance needed\";",
+							"tests[\"Reputation score = \" + jsonData.reputationScore] = jsonData.reputationScore === 4.2;",
+							"tests[\"Rate of pay = \" + jsonData.payRate] = jsonData.payRate === 10.5;",
+							"tests[\"Is hourly? = \" + jsonData.isHourly] = jsonData.isHourly === false;",
+							"tests[\"Estimate time = \" + jsonData.timeEstimate] = jsonData.timeEstimate === \"A minute or so...\";",
+							"tests[\"Posting city = \" + jsonData.city] = jsonData.city === \"Rapture\";",
+							"tests[\"Posting state = \" + jsonData.state] = jsonData.state === \"Washington\";",
+							"tests[\"Street address = \" + jsonData.streetAddress] = jsonData.streetAddress === \"Fort Frollic\";",
+							"tests[\"In progress? = \" + jsonData.isInProgress] = jsonData.isInProgress === false;",
+							"tests[\"Date posted = \" + jsonData.datePosted] = true;",
+							"",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/{{newlyPostedJob1}}",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"poster_name\":\"Billy Corgan\", \"state\":\"Washington\"}"
+				},
+				"description": "Confirm that the newly added post was successfuly modified. Confirm all attributes are as expected. Check for success code."
+			},
+			"response": []
+		},
+		{
+			"name": "City filter test - city exists",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Returned all jobs. Count =\" + jsonData.length] = true && jsonData.length > 0;",
+							"tests[\"Posting city = \" + jsonData[0].city] = jsonData[0].city === \"testcity\";",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/city",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"city\":\"testcity\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "City filter test - city does not exist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"",
+							"tests[\"Status code is 404 Not Found\"] = responseCode.code === 404;",
+							"",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/city",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"city\":\"Zootopia\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "State filter test - state exists",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Returned all jobs. Count =\" + jsonData.length] = true && jsonData.length > 0;",
+							"tests[\"Posting city = \" + jsonData[0].state] = jsonData[0].state === \"teststate\";",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/state",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"state\":\"teststate\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "State filter test - state does not exist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"tests[\"Status code is 404 Not Found\"] = responseCode.code === 404;",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/state",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"state\":\"stateofmind\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "City + State filter test - exists",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Returned all jobs. Count =\" + jsonData.length] = true && jsonData.length > 0;",
+							"tests[\"Posting city = \" + jsonData[0].state] = jsonData[0].state === \"teststate\";",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/citystate",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"state\":\"teststate\", \"city\":\"testcity\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "City + State filter test - city exists, but not state",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"tests[\"Status code is 404 Not Found\"] = responseCode.code === 404;",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/citystate",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"state\":\"oz\", \"city\":\"testcity\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "City + State filter test - state exist, but not city",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"tests[\"Status code is 404 Not Found\"] = responseCode.code === 404;",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/citystate",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"state\":\"teststate\", \"city\":\"derp!\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "City + State filter test - neither city nor state exist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"tests[\"Status code is 404 Not Found\"] = responseCode.code === 404;",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/citystate",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"state\":\"well, way out in space, there's an island\", \"city\":\"the natives, so resteless and violent\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Rating Filter Test - Rating = 0",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"var body = JSON.parse(responseBody);",
+							"",
+							"// Loop through all returned jobs",
+							"var jobRatings = [];",
+							"body.forEach(function(job){",
+							"    var testTitle = \"Returned job score = \" + job.reputationScore;",
+							"    tests[testTitle] = job.reputationScore >= 0",
+							"});",
+							"",
+							"tests[\"Returned jobs count =\" + body.length] = true && body.length > 0;",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/rating",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"reputation_score\":0}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Rating Filter Test - Low Rating",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"var body = JSON.parse(responseBody);",
+							"",
+							"// Loop through all returned jobs",
+							"var jobRatings = [];",
+							"body.forEach(function(job){",
+							"    var testTitle = \"Returned job score = \" + job.reputationScore;",
+							"    tests[testTitle] = job.reputationScore >= 1.0",
+							"});",
+							"",
+							"tests[\"Returned jobs count =\" + body.length] = true && body.length > 0;",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/rating",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"reputation_score\":1.0}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Rating Filter Test  - Mid Rating",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"var body = JSON.parse(responseBody);",
+							"",
+							"// Loop through all returned jobs",
+							"var jobRatings = [];",
+							"body.forEach(function(job){",
+							"    var testTitle = \"Returned job score = \" + job.reputationScore;",
+							"    tests[testTitle] = job.reputationScore >= 3.0",
+							"});",
+							"",
+							"tests[\"Returned jobs count =\" + body.length] = true && body.length > 0;",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/rating",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"reputation_score\":3.0}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Rating Filter Test  - Impossibly high rating",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"tests[\"Status code is 404 Not Found\"] = responseCode.code === 404;",
+							"",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/rating",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"reputation_score\":1000.0}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "City/State/Reputation Filter Test = All factors exist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"tests[\"Posting city = \" + jsonData[0].city] = jsonData[0].city === \"testcity\";",
+							"tests[\"Posting state = \" + jsonData[0].state] = jsonData[0].state === \"teststate\";",
+							"tests[\"Reputation score is greater than 1.0 = \" + jsonData[0].reputationScore] = jsonData[0].reputationScore >= 1.0;",
+							"",
+							"",
+							"",
+							"tests[\"Returned all jobs. Count =\" + jsonData.length] = true && jsonData.length > 0;",
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/location/rating",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"state\":\"teststate\", \"city\":\"testcity\", \"reputation_score\":1.0}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "City/State/Reputation Filter Test = bad city",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"",
+							"tests[\"Status code is 404 Not Found\"] = responseCode.code === 404;",
+							"",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/location/rating",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"state\":\"teststate\", \"city\":\"nowhere\", \"reputation_score\":1.0}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "City/State/Reputation Filter Test = bad state",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"",
+							"tests[\"Status code is 404 Not Found\"] = responseCode.code === 404;",
+							"",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/location/rating",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"state\":\"badrobot\", \"city\":\"testcity\", \"reputation_score\":1.0}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "City/State/Reputation Filter Test = rating too high",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"",
+							"tests[\"Status code is 404 Not Found\"] = responseCode.code === 404;",
+							"",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/location/rating",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"state\":\"teststate\", \"city\":\"testcity\", \"reputation_score\":1000.0}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE previously POSTed job by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/{{newlyPostedJob1}}",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm DELETED job is no longer in database",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 404 Not Found\"] = responseCode.code === 404;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://postskynetbountyboard.appspot.com/job/{{newlyPostedJob1}}",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

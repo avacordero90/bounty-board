@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Bounty Board</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/default.css" />
+    </head>
+    <body>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="login.html">
+                        <img class="miniLogo" alt="Brand" src="images/bountyBoardLogoMini.png">
+                    </a>
+                </div>
+
+                <div class="collapse navbar-collapse">
+                    <ul class="nav nav-tabs nav-justified">
+                        <li role="presentation" class="active"><a>Find A Job</a></li>
+                        <li role="presentation"><a href="posting.html">Post A Job</a></li>
+                        <li role="presentation"><a href="myjobs.html">My Jobs</a></li>
+                        <li role="presentation"><a href="leaderboard.html">Leaderboard</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="username">Username <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">User Profile</a></li>
+                                <li><a href="#">Completed Jobs</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="login.html" id="logout">Log Out</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="nav navbar-nav" id="searchBar">
+                <div class="navbar-form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Keywords">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="inputCity" placeholder="City">
+                    </div>
+                    <div class="form-group">
+                        <input type="date" class="form-control" id="inputAddress" placeholder="Date">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="inputEstimate" placeholder="Duration">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="inputPay" placeholder="Pay">
+                    </div>
+                    <div class="form-group">
+                        <input type="radio" name="inputPayType" value="Hourly"> Hourly &nbsp;
+                        <input type="radio" name="inputPayType" value="Daily"> Daily &nbsp;
+                        <input type="radio" name="inputPayType" value="All" checked> All &nbsp;
+                    </div>
+                    <div align="right">
+						<button type="submit" id="searchButton" class="btn btn-default">Search Jobs</button>
+						<button class="btn btn-default" id="clearFilters" onclick="getJobs()">Clear Filters</button>
+					</div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="center">
+            <h1>Bounty Board Job Postings</h1>
+            <div id="jobBoard">
+            </div>
+            <div id="leaderBoard">
+                <h3>Leaderboard</h3>
+                <br />
+                <div class="leaderboardSection">
+                    <h5>Highest Rated Posters</h5>
+                    <ol>
+                        <li>John Smith</li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ol>
+                </div>
+                <br />
+                <div class="leaderboardSection">
+                    <h5>Highest Rated Workers</h5>
+                    <ol>
+                        <li>Jane Doe</li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ol>
+                </div>
+                <br />
+                <div class="leaderboardSection">
+                    <h5>Most Jobs Completed</h5>
+                    <ol>
+                        <li>Jane Doe</li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="js/job.js"></script>
+    <script src="js/env.js"></script>
+    </body>
+</html>
