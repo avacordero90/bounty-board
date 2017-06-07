@@ -464,31 +464,32 @@ class JobCityStateFilterHandler(webapp2.RequestHandler):
             self.response.headers['Content-Type'] = 'text/csv'
             self.response.write('No jobs were found')
 
+
 class JobPayRateFilterHandler(webapp2.RequestHandler):
 
-		def options(self):
+    def options(self):
         self.response.status = '200'
         self.response.headers.add_header("Access-Control-Allow-Origin", "*")
         self.response.headers.add_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE")
         self.response.headers.add_header("Access-Control-Allow-Headers", "Content-Type")
         self.response.headers['Content-Type'] = 'text/html'
 
-		def post(self, id=None):
-				jobData = json.loads(self.request.body)
-				jobRate = jobData['payrate']
-				jobHourly = jobData['hourly']
-				
-				jobList = ""
+    def post(self, id=None):
+        # Get contents of the request body
+        jobData = json.loads(self.request.body)
+        jobHourly = jobData['hourly']
+        jobRate = jobData['payrate']
+
+        jobList = ""
         query = Job.query()   # Set up a query on the db
 
-				# Fetch first 100 jobs
+        # Fetch first 1000 jobs
         for job in query.fetch(1000):
             # If there are jobs in the db, load em' up
             found = True
-            if job.jobRate >= payrate and job.jobHourly === hourly:
+            if job.payRate >= jobRate and job.isHourly == jobHourly:
                 jobDict = job.to_dict()
-								
-						jobDict['self'] = "/job/" + job.key.urlsafe()
+                jobDict['self'] = "/job/" + job.key.urlsafe()
          
                 # Add the job to our JSON string
                 jobList = jobList + json.dumps(jobDict)
@@ -506,31 +507,32 @@ class JobPayRateFilterHandler(webapp2.RequestHandler):
             self.response.headers.add_header("Access-Control-Allow-Headers", "Content-Type")
             self.response.headers['Content-Type'] = 'text/csv'
             self.response.write('No jobs were found')
+
 
 class JobHourlyFilterHandler(webapp2.RequestHandler):
 
-		def options(self):
+    def options(self):
         self.response.status = '200'
         self.response.headers.add_header("Access-Control-Allow-Origin", "*")
         self.response.headers.add_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE")
         self.response.headers.add_header("Access-Control-Allow-Headers", "Content-Type")
         self.response.headers['Content-Type'] = 'text/html'
 
-		def post(self, id=None):
-				jobData = json.loads(self.request.body)
-				jobHourly = jobData['hourly']
-				
-				jobList = ""
+    def post(self, id=None):
+        # Get contents of the request body
+        jobData = json.loads(self.request.body)
+        jobHourly = jobData['hourly']
+
+        jobList = ""
         query = Job.query()   # Set up a query on the db
 
-				# Fetch first 100 jobs
+        # Fetch first 1000 jobs
         for job in query.fetch(1000):
             # If there are jobs in the db, load em' up
             found = True
-            if job.jobHourly === hourly:
+            if job.isHourly == jobHourly:
                 jobDict = job.to_dict()
-								
-						jobDict['self'] = "/job/" + job.key.urlsafe()
+                jobDict['self'] = "/job/" + job.key.urlsafe()
          
                 # Add the job to our JSON string
                 jobList = jobList + json.dumps(jobDict)
@@ -548,7 +550,6 @@ class JobHourlyFilterHandler(webapp2.RequestHandler):
             self.response.headers.add_header("Access-Control-Allow-Headers", "Content-Type")
             self.response.headers['Content-Type'] = 'text/csv'
             self.response.write('No jobs were found')
-
 						
 class JobMinimumRatingFilterHandler(webapp2.RequestHandler):
 
@@ -1036,14 +1037,14 @@ app = webapp2.WSGIApplication([
     ('/job/keyword', JobKeywordHandler),
     ('/job/rating', JobMinimumRatingFilterHandler),
     ('/job/citystate', JobCityStateFilterHandler),
-		('/job/payrate', JobPayRateFilterHandler),
-		('/job/hourly', JobHourlyFilterHandler),
+    ('/job/payrate', JobPayRateFilterHandler),
+    ('/job/hourly', JobHourlyFilterHandler),
     ('/job/city', JobCityFilterHandler),
     ('/job/state', JobStateFilterHandler),
     ('/job/(.*)', JobHandler),
     ('/job', JobHandler),
     ('/user/username', UserUsernameFilterHandler),
-	('/user/score/(.*)', UserScoreHandler),
-	('/user/(.*)', UserHandler),
-	('/user', UserHandler)
+    ('/user/score/(.*)', UserScoreHandler),
+    ('/user/(.*)', UserHandler),
+    ('/user', UserHandler)
 ], debug=True)
