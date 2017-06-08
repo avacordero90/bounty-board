@@ -125,12 +125,101 @@ function populateJobBoard(jobs) {
     }
 }
 
+<<<<<<< HEAD
 function clearFilters() {
 	filterKeywords.value = "";
 	filterCity.value = "";
 	filterDate.value = "";
 	filterPay.value = 0;
 	filterHourly.checked = true;
+=======
+function getData() {
+    getJobs();
+    getLeaderboardUsers();
+}
+
+function getLeaderboardUsers() {
+
+    var req = new XMLHttpRequest();
+    var url = "https://postskynetbountyboard.appspot.com/user";
+
+    req.open("GET", url, true);
+    req.addEventListener('load', function () {
+        if (req.status >= 200 && req.status < 400) {
+            var leaderResponse = JSON.parse(req.responseText);
+            var length = leaderResponse.length;
+
+            var leaderboardPosters = document.getElementById("leaderboardPosters");
+
+            var table = document.createElement("table");
+            table.className = "leaderTable";
+            var tablebody = document.createElement("tbody");
+            for (var i = 0; i < leaderResponse.length; i++) {
+                var tablerow = document.createElement("tr");
+                var rank = document.createElement("td");
+                rank.innerHTML = i + 1 + ".";
+                var name = document.createElement("td");
+                name.innerHTML = leaderResponse[i].realName;
+                var score = document.createElement("td");
+                score.innerHTML = leaderResponse[i].ratingAggregate;
+                tablerow.appendChild(rank);
+                tablerow.appendChild(name);
+                tablerow.appendChild(score);
+                tablebody.appendChild(tablerow);
+            }
+            table.appendChild(tablebody);
+            leaderboardPosters.appendChild(table);
+
+            var leaderboardWorkers = document.getElementById("leaderboardWorkers");
+
+            var table = document.createElement("table");
+            table.className = "leaderTable";
+            var tablebody = document.createElement("tbody");
+            for (var i = 0; i < leaderResponse.length; i++) {
+                var tablerow = document.createElement("tr");
+                var rank = document.createElement("td");
+                rank.innerHTML = i + 1 + ".";
+                var name = document.createElement("td");
+                name.innerHTML = leaderResponse[i].realName;
+                var score = document.createElement("td");
+                score.innerHTML = leaderResponse[i].ratingAggregate;
+                tablerow.appendChild(rank);
+                tablerow.appendChild(name);
+                tablerow.appendChild(score);
+                tablebody.appendChild(tablerow);
+            }
+            table.appendChild(tablebody);
+            leaderboardWorkers.appendChild(table);
+
+            var leaderboardMostJobs = document.getElementById("leaderboardMostJobs");
+
+            var table = document.createElement("table");
+            table.className = "leaderTable";
+            var tablebody = document.createElement("tbody");
+            for (var i = 0; i < leaderResponse.length; i++) {
+                var tablerow = document.createElement("tr");
+                var rank = document.createElement("td");
+                rank.innerHTML = i + 1 + ".";
+                var name = document.createElement("td");
+                name.innerHTML = leaderResponse[i].realName;
+                var score = document.createElement("td");
+                score.innerHTML = leaderResponse[i].ratingAggregate;
+                tablerow.appendChild(rank);
+                tablerow.appendChild(name);
+                tablerow.appendChild(score);
+                tablebody.appendChild(tablerow);
+            }
+            table.appendChild(tablebody);
+            leaderboardMostJobs.appendChild(table);
+
+            console.log(leaderResponse);
+
+        } else {
+            console.log("Error from request: " + req.statusText);
+        }
+    });
+    req.send(null);
+>>>>>>> origin/master
 }
 
 // Get all jobs in database
