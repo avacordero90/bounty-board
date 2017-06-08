@@ -176,10 +176,26 @@ li > a {
     width: 178.4px; 
 }
 
+#leaderBoard {
+    margin-top: 40px;
+}
+
 .leaderboardSection {
     border: 1px solid black;
 }
 
 .leaderboardSection > ul {
     border-bottom: 1px solid black;
+}
+
+.leaderTable {
+    width:90%;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.leaderboardHeader {
+    border-bottom: 1px solid black;
+    margin-bottom: 5px;
+}
 }
