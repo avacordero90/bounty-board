@@ -1,7 +1,12 @@
 ﻿document.addEventListener('DOMContentLoaded', getJobs);
 
 var jobBoard = document.getElementById("jobBoard");
+var filterKeywords = document.getElementById("inputKeywords");
 var filterCity = document.getElementById("inputCity");
+var filterDate = document.getElementById("inputDate");
+var filterPay = document.getElementById("inputPay");
+var	filterHourly = document.getElementById("inputPayHourly");
+var filterDaily = document.getElementById("inputPayDaily");
 var searchButton = document.getElementById("searchButton");
 searchButton.addEventListener("click", function () { filterJobs(); });
 
@@ -120,8 +125,18 @@ function populateJobBoard(jobs) {
     }
 }
 
+function clearFilters() {
+	filterKeywords.value = "";
+	filterCity.value = "";
+	filterDate.value = "";
+	filterPay.value = 0;
+	filterHourly.checked = true;
+}
+
 // Get all jobs in database
 function getJobs() {
+
+	clearFilters();
 
     var req = new XMLHttpRequest();
     var url = "https://postskynetbountyboard.appspot.com/job";
@@ -153,25 +168,37 @@ function createNewRow() {
 // Filters jobs based on criteria
 // ** CURRENTLY ONLY FILTERS BASED ON CITY
 function filterJobs() {
+	
+	if (filterKeywords.value != "" && filterKeywords.value != null)
+		filterKeywordsFunction();
+	else if (filterCity.value != "" && filterCity.value != null)
+		filterCityFunction();
+	else if (filterDate.value != "" && filterDate.value != null)
+		filterDateFunction();
+	else if (filterPay.value != "" && filterPay.value != null)
+		filterPayFunction();
+}
 
-    console.log("In filter jobs");
-
-    try {
+function filterKeywordsFunction() {
+	
+		console.log("In filter jobs");
+	
+		try {
         // Declare API request address
         var req = new XMLHttpRequest();
-        var url = "https://postskynetbountyboard.appspot.com/job/city";
+        var url = "https://postskynetbountyboard.appspot.com/job/keyword";
 
         // Create data object to send with POST
         var data = {
-            city: null
+            keyword: null
         };
 
         // Assign form information to data object
-        if (filterCity.value == "" || filterCity.value == null)
+        if (filterKeywords.value == "" || filterKeywords.value == null)
             getJobs();
 
         else
-            data.city = inputCity.value;
+            data.keyword = filterKeywords.value;
 
         req.open("POST", url, true);
         req.setRequestHeader('Content-Type', 'application/json');
@@ -190,4 +217,135 @@ function filterJobs() {
     } catch (e) {
         alert(e);
     }
+}
+
+function filterCityFunction() {
+
+    console.log("In filter jobs");
+	
+    try {
+        // Declare API request address
+        var req = new XMLHttpRequest();
+        var url = "https://postskynetbountyboard.appspot.com/job/city";
+
+        // Create data object to send with POST
+        var data = {
+            city: null
+        };
+
+        // Assign form information to data object
+        if (filterCity.value == "" || filterCity.value == null)
+            getJobs();
+
+        else
+            data.city = filterCity.value;
+
+        req.open("POST", url, true);
+        req.setRequestHeader('Content-Type', 'application/json');
+        req.addEventListener('load', function () {
+            if (req.status >= 200 && req.status < 400) {
+                var response = JSON.parse(req.responseText);
+                console.log(response);
+
+                populateJobBoard(response);
+            } else {
+                console.log("Error from request: " + req.statusText);
+                populateJobBoard(null);
+            }
+        });
+        req.send(JSON.stringify(data));
+    } catch (e) {
+        alert(e);
+    }
+}
+
+function filterDateFunction() {
+
+    console.log("In filter jobs");
+	
+    try {
+        // Declare API request address
+        var req = new XMLHttpRequest();
+        var url = "https://postskynetbountyboard.appspot.com/job/date";
+
+        // Create data object to send with POST
+        var data = {
+            date: null
+        };
+
+        // Assign form information to data object
+        if (filterDate.value == "" || filterDate.value == null)
+            getJobs();
+
+        else
+		{
+			var dateString = filterDate.value;
+			var formattedString = dateString.substring(5, 7) + "/" + dateString.substring(8, 10) + "/" + dateString.substring(0, 4);
+			data.date = formattedString;
+		}
+		
+        req.open("POST", url, true);
+        req.setRequestHeader('Content-Type', 'application/json');
+        req.addEventListener('load', function () {
+            if (req.status >= 200 && req.status < 400) {
+                var response = JSON.parse(req.responseText);
+                console.log(response);
+
+                populateJobBoard(response);
+            } else {
+                console.log("Error from request: " + req.statusText);
+                populateJobBoard(null);
+            }
+        });
+        req.send(JSON.stringify(data));
+    } catch (e) {
+        alert(e);
+    }
+}
+
+function filterPayFunction() {
+	
+	console.log("In filter jobs");
+	
+    try {
+        // Declare API request address
+        var req = new XMLHttpRequest();
+        var url = "https://postskynetbountyboard.appspot.com/job/payrate";
+
+        // Create data object to send with POST
+        var data = {
+            hourly: null,
+			payrate: null
+        };
+
+        // Assign form information to data object
+        if (filterPay.value == "" || filterPay.value == null)
+            getJobs();
+
+        else
+		{
+			data.payrate = parseFloat(filterPay.value);
+			data.hourly = filterHourly.checked;
+		}
+		
+		console.log(data);
+		
+        req.open("POST", url, true);
+        req.setRequestHeader('Content-Type', 'application/json');
+        req.addEventListener('load', function () {
+            if (req.status >= 200 && req.status < 400) {
+                var response = JSON.parse(req.responseText);
+                console.log(response);
+
+                populateJobBoard(response);
+            } else {
+                console.log("Error from request: " + req.statusText);
+                populateJobBoard(null);
+            }
+        });
+        req.send(JSON.stringify(data));
+    } catch (e) {
+        alert(e);
+    }
+	
 }
