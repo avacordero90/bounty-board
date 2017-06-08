@@ -1,4 +1,4 @@
-﻿document.addEventListener('DOMContentLoaded', getJobs);
+document.addEventListener('DOMContentLoaded', getJobs);
 
 var jobBoard = document.getElementById("jobBoard");
 var filterKeywords = document.getElementById("inputKeywords");
@@ -125,14 +125,15 @@ function populateJobBoard(jobs) {
     }
 }
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
 function clearFilters() {
 	filterKeywords.value = "";
 	filterCity.value = "";
 	filterDate.value = "";
 	filterPay.value = 0;
 	filterHourly.checked = true;
-=======
+}
+//=======
 function getData() {
     getJobs();
     getLeaderboardUsers();
@@ -219,7 +220,7 @@ function getLeaderboardUsers() {
         }
     });
     req.send(null);
->>>>>>> origin/master
+//>>>>>>> origin/master
 }
 
 // Get all jobs in database
@@ -235,7 +236,6 @@ function getJobs() {
         if (req.status >= 200 && req.status < 400) {
             var response = JSON.parse(req.responseText);
             var length = response.length;
-            console.log(response);
 
             populateJobBoard(response);
 

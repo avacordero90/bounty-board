@@ -27,7 +27,7 @@
                         <li role="presentation"><a href="myjobs.html">My Jobs</a></li>
                         <li role="presentation" class="active"><a>Leaderboard</a></li>
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="username">Username <span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="username"> <span class="caret"></span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="#">User Profile</a></li>
                                 <li><a href="#">Completed Jobs</a></li>
@@ -39,28 +39,28 @@
                 </div>
             </div>
             <div class="nav navbar-nav" id="searchBar">
-                <form class="navbar-form">
+                <div class="navbar-form">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Keywords">
+                        <input type="text" class="form-control" id="inputKeywords" placeholder="Keywords">
                     </div>
                     <div class="form-group">
                         <input type="text" class="form-control" id="inputCity" placeholder="City">
                     </div>
                     <div class="form-group">
-                        <input type="date" class="form-control" id="inputAddress" placeholder="Date">
+                        <input type="date" class="form-control" id="inputDate" placeholder="Date">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="inputEstimate" placeholder="Duration">
+                        <input type="number" class="form-control" id="inputPay">
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" id="inputPay" placeholder="Pay">
+                        <input type="radio" name="inputPayType" id="inputPayHourly" value="Hourly" checked> Hourly &nbsp;
+                        <input type="radio" name="inputPayType" id="inputPayDaily" value="Daily"> Daily &nbsp;
                     </div>
-                    <div class="form-group">
-                        <input type="radio" name="inputPayType" value="Hourly" checked> Hourly &nbsp;
-                        <input type="radio" name="inputPayType" value="Daily"> Daily
-                    </div>
-                    <button type="submit" class="btn btn-default">Search Jobs</button>
-                </form>
+                    <div align="right">
+						<button type="submit" id="searchButton" class="btn btn-default">Search Jobs</button>
+						<button class="btn btn-default" id="clearFilters" onclick="getJobs()">Clear Filters</button>
+					</div>
+                </div>
             </div>
         </nav>
 
